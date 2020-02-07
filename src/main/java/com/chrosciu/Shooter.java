@@ -1,13 +1,44 @@
 package com.chrosciu;
 
-import org.apache.commons.lang3.tuple.MutablePair;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Shooter {
 
-    private List<List<MutablePair<Field, Boolean>>> data = new ArrayList<>();
+    @Getter
+    @EqualsAndHashCode
+    static class FieldWithHitMark {
+        private final Field field;
+        private boolean hit;
+
+        FieldWithHitMark(Field field) {
+            this.field = field;
+            this.hit = false;
+        }
+
+        void markAsHit() {
+            this.hit = true;
+        }
+    }
+
+    @Value
+    static class ShipAsFields {
+        List<FieldWithHitMark> fields;
+
+        ShipAsFields() {
+            fields = new ArrayList<>();
+        }
+
+        void addField(FieldWithHitMark field) {
+            fields.add(field);
+        }
+    }
+
+    private List<ShipAsFields> shipsAsFields = new ArrayList<>();
 
     /**
      * Initialize shooter with given list of ships on board
@@ -16,15 +47,15 @@ public class Shooter {
      */
     public Shooter(List<Ship> input) {
         for (int i = 0; i < input.size(); ++i) {
-            List<MutablePair<Field, Boolean>> list = new ArrayList<>();
+            ShipAsFields shipAsFields = new ShipAsFields();
             for (int j = 0; j < input.get(i).getLength(); ++j) {
                 if (input.get(i).isVertical()) {
-                    list.add(MutablePair.of(new Field(input.get(i).getFirstField().getX(), input.get(i).getFirstField().getY() + j), false));
+                    shipAsFields.addField(new FieldWithHitMark(new Field(input.get(i).getFirstField().getX(), input.get(i).getFirstField().getY() + j)));
                 } else {
-                    list.add(MutablePair.of(new Field(input.get(i).getFirstField().getX() + j, input.get(i).getFirstField().getY()), false));
+                    shipAsFields.addField(new FieldWithHitMark(new Field(input.get(i).getFirstField().getX() + j, input.get(i).getFirstField().getY())));
                 }
             }
-            data.add(list);
+            shipsAsFields.add(shipAsFields);
         }
     }
 
@@ -37,12 +68,12 @@ public class Shooter {
     public int shoot(Field field) {
         int rv = 0;
         //iterate through all ships
-        for (int i = 0; i < data.size() && 0 == rv; ++i) {
+        for (int i = 0; i < shipsAsFields.size() && 0 == rv; ++i) {
             //iterate through all ship fields
-            for (int j = 0; j < data.get(i).size() && 0 == rv; ++j) {
+            for (int j = 0; j < shipsAsFields.get(i).getFields().size() && 0 == rv; ++j) {
                 //if any of ship fields is equal to passed field - mark as hit
-                if (data.get(i).get(j).getLeft().equals(field)) {
-                    data.get(i).get(j).setRight(true);
+                if (shipsAsFields.get(i).getFields().get(j).getField().equals(field)) {
+                    shipsAsFields.get(i).getFields().get(j).markAsHit();
                     rv = 1;
                 }
             }
@@ -50,8 +81,8 @@ public class Shooter {
             if (1 == rv) {
                 //iterate through all fields and check if they are all hit
                 boolean a = true;
-                for (int j = 0; j < data.get(i).size() && a; ++j) {
-                    a &= data.get(i).get(j).getRight();
+                for (int j = 0; j < shipsAsFields.get(i).getFields().size() && a; ++j) {
+                    a &= shipsAsFields.get(i).getFields().get(j).isHit();
                 }
                 if (a) {
                     rv = 2;
@@ -60,9 +91,9 @@ public class Shooter {
         }
         //check if all ships are sunk
         boolean a = true;
-        for (int i = 0; i < data.size() && a; ++i) {
-            for (int j = 0; j < data.get(i).size() && a; ++j) {
-                a &= data.get(i).get(j).getRight();
+        for (int i = 0; i < shipsAsFields.size() && a; ++i) {
+            for (int j = 0; j < shipsAsFields.get(i).getFields().size() && a; ++j) {
+                a &= shipsAsFields.get(i).getFields().get(j).isHit();
             }
         }
         if (a) {
