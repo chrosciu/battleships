@@ -47,7 +47,7 @@ public class Shooter {
         for (Ship ship: ships) {
             ShipAsFields shipAsFields = new ShipAsFields();
             for (int j = 0; j < ship.getLength(); ++j) {
-                if (ship.isVertical()) {
+                if (Direction.VERTICAL == ship.getDirection()) {
                     shipAsFields.addField(new FieldWithHitMark(new Field(ship.getFirstField().getX(), ship.getFirstField().getY() + j)));
                 } else {
                     shipAsFields.addField(new FieldWithHitMark(new Field(ship.getFirstField().getX() + j, ship.getFirstField().getY())));

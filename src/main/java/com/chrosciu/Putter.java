@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.chrosciu.Direction.HORIZONTAL;
+import static com.chrosciu.Direction.VERTICAL;
+
 public class Putter {
     public static List<Ship> putShipsWithGivenSizeOnBoard(List<Integer> shipSizes, int boardSize) {
         List<Ship> ships = new ArrayList<>();
         boolean[][] boardFieldsOccupationFlags = new boolean[boardSize][boardSize];
         for (int i = 0; i < shipSizes.size(); ++i) {
             for (;;) {
-                boolean f = new Random().nextBoolean();
+                Direction direction = new Random().nextBoolean() ? VERTICAL : HORIZONTAL;
                 int a = new Random().nextInt(boardSize);
                 int b = new Random().nextInt(boardSize - shipSizes.get(i));
                 boolean collision = false;
@@ -21,7 +24,7 @@ public class Putter {
                     if (b + k >= boardSize) {
                         continue;
                     }
-                    if (f) {
+                    if (VERTICAL == direction) {
                         if (a - 1 >= 0) {
                             if (boardFieldsOccupationFlags[a - 1][b + k]) {
                                 collision = true;
@@ -59,13 +62,13 @@ public class Putter {
                 }
                 if (!collision) {
                     for (int k = 0; k < shipSizes.get(i); ++k) {
-                        if (f) {
+                        if (VERTICAL == direction) {
                             boardFieldsOccupationFlags[a][b + k] = true;
                         } else {
                             boardFieldsOccupationFlags[b + k][a] = true;
                         }
                     }
-                    ships.add(new Ship(f ? new Field(a, b) : new Field(b, a), shipSizes.get(i), f));
+                    ships.add(new Ship(VERTICAL == direction ? new Field(a, b) : new Field(b, a), shipSizes.get(i), direction));
                     break;
                 }
             }

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.chrosciu.Direction.VERTICAL;
+
 public class PutterTest {
 
     private static final List<Integer> SHIPS_SIZES = Arrays.asList(4, 3, 3, 2, 2, 2, 1, 1, 1, 1);
@@ -67,7 +69,7 @@ public class PutterTest {
     private List<Field> getAllFieldsForShip(Ship ship) {
         List<Field> fields = new ArrayList<>();
         for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
-            if (ship.isVertical()) {
+            if (VERTICAL == ship.getDirection()) {
                 fields.add(new Field(ship.getFirstField().getX(), ship.getFirstField().getY() + fieldIndex));
             } else {
                 fields.add(new Field(ship.getFirstField().getX() + fieldIndex, ship.getFirstField().getY()));
@@ -79,7 +81,7 @@ public class PutterTest {
     private List<Field> getAllFieldsForShipWithBorder(Ship ship) {
         List<Field> fields = new ArrayList<>();
         for (int fieldIndex = -1; fieldIndex <= ship.getLength(); ++fieldIndex) {
-            if (ship.isVertical()) {
+            if (VERTICAL == ship.getDirection()) {
                 fields.add(new Field(ship.getFirstField().getX() - 1, ship.getFirstField().getY() + fieldIndex));
                 fields.add(new Field(ship.getFirstField().getX(), ship.getFirstField().getY() + fieldIndex));
                 fields.add(new Field(ship.getFirstField().getX() + 1, ship.getFirstField().getY() + fieldIndex));

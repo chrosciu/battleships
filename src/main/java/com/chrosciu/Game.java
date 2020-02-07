@@ -16,7 +16,7 @@ public class Game {
         for (;;) {
             System.out.println("Enter field vertical coordinate (x)");
             int x = keyboard.nextInt();
-            System.out.println("Enter field vertical coordinate (y)");
+            System.out.println("Enter field horizontal coordinate (y)");
             int y = keyboard.nextInt();
             Result result = shooter.takeShot(new Field(x, y));
             System.out.println(result);
