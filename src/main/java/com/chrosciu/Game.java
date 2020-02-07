@@ -1,6 +1,5 @@
 package com.chrosciu;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
@@ -14,9 +13,7 @@ public class Game {
         List<Integer> data = Arrays.asList(1);
         // board 2 x 2
         int s = 2;
-        //create empty ship list...
-        List<Triple<Pair<Integer, Integer>, Integer, Boolean>> rv = new ArrayList<>();
-        //... and fill it with ships placed on board
+        List<Triple<Field, Integer, Boolean>> rv = new ArrayList<>();
         Putter.put(data, s, rv);
         //let's start the game
         Shooter shooter = new Shooter(rv);
@@ -29,7 +26,7 @@ public class Game {
             System.out.println("enter b");
             int b = keyboard.nextInt();
             //... and take shot !
-            int r = shooter.shoot(Pair.of(a, b));
+            int r = shooter.shoot(new Field(a, b));
             System.out.println(r);
             //if all ships sunk finish the game
             if (3 == r) {

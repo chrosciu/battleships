@@ -1,6 +1,5 @@
 package com.chrosciu;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class Putter {
      * @param s - board size (board is a square)
      * @param rv - list where ships are added after successful put
      */
-    public static void put(List<Integer> data, int s, List<Triple<Pair<Integer, Integer>, Integer, Boolean>> rv) {
+    public static void put(List<Integer> data, int s, List<Triple<Field, Integer, Boolean>> rv) {
         //array representing already occupied fields
         boolean[][] arr = new boolean[s][s];
         //try to place each ship
@@ -97,7 +96,7 @@ public class Putter {
                         }
                     }
                     //add ship to list
-                    rv.add(Triple.of(f ? Pair.of(a, b) : Pair.of(b, a), data.get(i), f));
+                    rv.add(Triple.of(f ? new Field(a, b) : new Field(b, a), data.get(i), f));
                     break;
                 }
             }
