@@ -1,7 +1,5 @@
 package com.chrosciu;
 
-import org.apache.commons.lang3.tuple.Triple;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +11,7 @@ public class Game {
         List<Integer> data = Arrays.asList(1);
         // board 2 x 2
         int s = 2;
-        List<Triple<Field, Integer, Boolean>> rv = new ArrayList<>();
+        List<Ship> rv = new ArrayList<>();
         Putter.put(data, s, rv);
         //let's start the game
         Shooter shooter = new Shooter(rv);

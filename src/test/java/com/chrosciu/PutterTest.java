@@ -1,7 +1,5 @@
 package com.chrosciu;
 
-
-import org.apache.commons.lang3.tuple.Triple;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,7 +16,7 @@ public class PutterTest {
     @Test
     public void shouldPutShipsWithGivenSizesOnBoardWithoutCollision() {
         //given
-        List<Triple<Field, Integer, Boolean>> ships = new ArrayList<>();
+        List<Ship> ships = new ArrayList<>();
 
         //when
         Putter.put(SHIPS_SIZES, BOARD_SIZE, ships);
@@ -29,19 +27,19 @@ public class PutterTest {
         assertNoCollisionBetweenShips(ships);
     }
 
-    private void assertAllShipsHaveRequestedSizes(List<Triple<Field, Integer, Boolean>> ships, List<Integer> shipsSizes) {
+    private void assertAllShipsHaveRequestedSizes(List<Ship> ships, List<Integer> shipsSizes) {
         List<Integer> orderedShipsSizes = shipsSizes.stream().sorted().collect(Collectors.toList());
-        List<Integer> orderedActualShipSizes = ships.stream().map(Triple::getMiddle).sorted().collect(Collectors.toList());
+        List<Integer> orderedActualShipSizes = ships.stream().map(Ship::getLength).sorted().collect(Collectors.toList());
         Assert.assertEquals(orderedActualShipSizes, orderedShipsSizes);
     }
 
-    private void assertAllShipsNotOutsideBoard(List<Triple<Field, Integer, Boolean>> ships, int boardSize) {
-        for(Triple<Field, Integer, Boolean> ship : ships) {
+    private void assertAllShipsNotOutsideBoard(List<Ship> ships, int boardSize) {
+        for(Ship ship : ships) {
             assertShipNotOutsideBoard(ship, boardSize);
         }
     }
 
-    private void assertShipNotOutsideBoard(Triple<Field, Integer, Boolean> ship, int boardSize) {
+    private void assertShipNotOutsideBoard(Ship ship, int boardSize) {
         List<Field> allShipFields = getAllFieldsForShip(ship);
         for (Field shipField: allShipFields) {
             assertFieldNotOutsideBoard(shipField, boardSize);
@@ -55,13 +53,13 @@ public class PutterTest {
         Assert.assertTrue(pointHorizontalCoordinate >= 0 && pointHorizontalCoordinate < boardSize);
     }
 
-    private void assertNoCollisionBetweenShips(List<Triple<Field, Integer, Boolean>> ships) {
+    private void assertNoCollisionBetweenShips(List<Ship> ships) {
         int shipsCount = ships.size();
         for (int i = 0; i < shipsCount; ++i) {
-            Triple<Field, Integer, Boolean> firstShip = ships.get(i);
+            Ship firstShip = ships.get(i);
             List<Field> firstShipFieldsWithBorder = getAllFieldsForShipWithBorder(firstShip);
             for (int j = i + 1; j < shipsCount; ++j) {
-                Triple<Field, Integer, Boolean> secondShip = ships.get(j);
+                Ship secondShip = ships.get(j);
                 List<Field> secondShipFields = getAllFieldsForShip(secondShip);
                 secondShipFields.retainAll(firstShipFieldsWithBorder);
                 Assert.assertTrue(secondShipFields.isEmpty());
@@ -69,35 +67,29 @@ public class PutterTest {
         }
     }
 
-    private List<Field> getAllFieldsForShip(Triple<Field, Integer, Boolean> ship) {
-        Field firstField = ship.getLeft();
-        int shipLength = ship.getMiddle();
-        boolean vertical = ship.getRight();
+    private List<Field> getAllFieldsForShip(Ship ship) {
         List<Field> fields = new ArrayList<>();
-        for (int fieldIndex = 0; fieldIndex < shipLength; ++fieldIndex) {
-            if (vertical) {
-                fields.add(new Field(firstField.getX(), firstField.getY() + fieldIndex));
+        for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
+            if (ship.isVertical()) {
+                fields.add(new Field(ship.getFirstField().getX(), ship.getFirstField().getY() + fieldIndex));
             } else {
-                fields.add(new Field(firstField.getX() + fieldIndex, firstField.getY()));
+                fields.add(new Field(ship.getFirstField().getX() + fieldIndex, ship.getFirstField().getY()));
             }
         }
         return fields;
     }
 
-    private List<Field> getAllFieldsForShipWithBorder(Triple<Field, Integer, Boolean> ship) {
-        Field firstField = ship.getLeft();
-        int shipLength = ship.getMiddle();
-        boolean vertical = ship.getRight();
+    private List<Field> getAllFieldsForShipWithBorder(Ship ship) {
         List<Field> fields = new ArrayList<>();
-        for (int fieldIndex = -1; fieldIndex <= shipLength; ++fieldIndex) {
-            if (vertical) {
-                fields.add(new Field(firstField.getX() - 1, firstField.getY() + fieldIndex));
-                fields.add(new Field(firstField.getX(), firstField.getY() + fieldIndex));
-                fields.add(new Field(firstField.getX() + 1, firstField.getY() + fieldIndex));
+        for (int fieldIndex = -1; fieldIndex <= ship.getLength(); ++fieldIndex) {
+            if (ship.isVertical()) {
+                fields.add(new Field(ship.getFirstField().getX() - 1, ship.getFirstField().getY() + fieldIndex));
+                fields.add(new Field(ship.getFirstField().getX(), ship.getFirstField().getY() + fieldIndex));
+                fields.add(new Field(ship.getFirstField().getX() + 1, ship.getFirstField().getY() + fieldIndex));
             } else {
-                fields.add(new Field(firstField.getX() + fieldIndex, firstField.getY() - 1));
-                fields.add(new Field(firstField.getX() + fieldIndex, firstField.getY()));
-                fields.add(new Field(firstField.getX() + fieldIndex, firstField.getY() + 1));
+                fields.add(new Field(ship.getFirstField().getX() + fieldIndex, ship.getFirstField().getY() - 1));
+                fields.add(new Field(ship.getFirstField().getX() + fieldIndex, ship.getFirstField().getY()));
+                fields.add(new Field(ship.getFirstField().getX() + fieldIndex, ship.getFirstField().getY() + 1));
             }
         }
         return fields;
