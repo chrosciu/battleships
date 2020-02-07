@@ -1,13 +1,12 @@
 package com.chrosciu;
 
-import org.apache.commons.lang3.tuple.Triple;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Putter {
-
-    public static void put(List<Integer> shipSizes, int boardSize, List<Ship> ships) {
+    public static List<Ship> putShipsWithGivenSizeOnBoard(List<Integer> shipSizes, int boardSize) {
+        List<Ship> ships = new ArrayList<>();
         boolean[][] boardFieldsOccupationFlags = new boolean[boardSize][boardSize];
         for (int i = 0; i < shipSizes.size(); ++i) {
             for (;;) {
@@ -71,5 +70,6 @@ public class Putter {
                 }
             }
         }
+        return ships;
     }
 }

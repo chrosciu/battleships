@@ -15,11 +15,8 @@ public class PutterTest {
 
     @Test
     public void shouldPutShipsWithGivenSizesOnBoardWithoutCollision() {
-        //given
-        List<Ship> ships = new ArrayList<>();
-
         //when
-        Putter.put(SHIPS_SIZES, BOARD_SIZE, ships);
+        List<Ship> ships = Putter.putShipsWithGivenSizeOnBoard(SHIPS_SIZES, BOARD_SIZE);
 
         //then
         assertAllShipsHaveRequestedSizes(ships, SHIPS_SIZES);
