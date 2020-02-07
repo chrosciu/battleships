@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.chrosciu.Result.FINISHED;
 import static com.chrosciu.Result.HIT;
@@ -41,20 +42,19 @@ class ShipAsFields {
 }
 
 public class Shooter {
-    private List<ShipAsFields> shipsAsFields = new ArrayList<>();
+    private final List<ShipAsFields> shipsAsFields;
 
     public Shooter(List<Ship> ships) {
-        for (Ship ship: ships) {
-            ShipAsFields shipAsFields = new ShipAsFields();
-            for (int j = 0; j < ship.getLength(); ++j) {
-                if (Direction.VERTICAL == ship.getDirection()) {
-                    shipAsFields.addField(new FieldWithHitMark(new Field(ship.getFirstField().getX(), ship.getFirstField().getY() + j)));
-                } else {
-                    shipAsFields.addField(new FieldWithHitMark(new Field(ship.getFirstField().getX() + j, ship.getFirstField().getY())));
-                }
-            }
-            shipsAsFields.add(shipAsFields);
+        shipsAsFields = ships.stream().map(this::convertShipToShipWithFieldsForm).collect(Collectors.toList());
+    }
+
+    private ShipAsFields convertShipToShipWithFieldsForm(Ship ship) {
+        ShipAsFields shipAsFields = new ShipAsFields();
+        for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
+            Field shipField = ship.getDirection().getShift().apply(ship.getFirstField(), fieldIndex);
+            shipAsFields.addField(new FieldWithHitMark(shipField));
         }
+        return shipAsFields;
     }
 
     public Result takeShot(Field field) {
