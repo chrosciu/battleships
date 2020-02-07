@@ -45,19 +45,14 @@ public class Shooter {
 
     private List<ShipAsFields> shipsAsFields = new ArrayList<>();
 
-    /**
-     * Initialize shooter with given list of ships on board
-     *
-     * @param input - list of ships. Each ship is described by first field coordinate, length and orientation
-     */
-    public Shooter(List<Ship> input) {
-        for (int i = 0; i < input.size(); ++i) {
+    public Shooter(List<Ship> ships) {
+        for (int i = 0; i < ships.size(); ++i) {
             ShipAsFields shipAsFields = new ShipAsFields();
-            for (int j = 0; j < input.get(i).getLength(); ++j) {
-                if (input.get(i).isVertical()) {
-                    shipAsFields.addField(new FieldWithHitMark(new Field(input.get(i).getFirstField().getX(), input.get(i).getFirstField().getY() + j)));
+            for (int j = 0; j < ships.get(i).getLength(); ++j) {
+                if (ships.get(i).isVertical()) {
+                    shipAsFields.addField(new FieldWithHitMark(new Field(ships.get(i).getFirstField().getX(), ships.get(i).getFirstField().getY() + j)));
                 } else {
-                    shipAsFields.addField(new FieldWithHitMark(new Field(input.get(i).getFirstField().getX() + j, input.get(i).getFirstField().getY())));
+                    shipAsFields.addField(new FieldWithHitMark(new Field(ships.get(i).getFirstField().getX() + j, ships.get(i).getFirstField().getY())));
                 }
             }
             shipsAsFields.add(shipAsFields);
@@ -66,19 +61,14 @@ public class Shooter {
 
     public Result shoot(Field field) {
         Result result = MISSED;
-        //iterate through all ships
         for (int i = 0; i < shipsAsFields.size() && MISSED == result; ++i) {
-            //if any of ship fields is equal to passed field - mark as hit
             for (int j = 0; j < shipsAsFields.get(i).getFields().size() && MISSED == result; ++j) {
-                //if any of ship fields is equal to passed field - mark as hit
                 if (shipsAsFields.get(i).getFields().get(j).getField().equals(field)) {
                     shipsAsFields.get(i).getFields().get(j).markAsHit();
                     result = HIT;
                 }
             }
-            //if ship is hit - check if it is sunk
             if (HIT == result) {
-                //iterate through all fields and check if they are all hit
                 boolean a = true;
                 for (int j = 0; j < shipsAsFields.get(i).getFields().size() && a; ++j) {
                     a &= shipsAsFields.get(i).getFields().get(j).isHit();
@@ -88,7 +78,6 @@ public class Shooter {
                 }
             }
         }
-        //check if all ships are sunk
         boolean a = true;
         for (int i = 0; i < shipsAsFields.size() && a; ++i) {
             for (int j = 0; j < shipsAsFields.get(i).getFields().size() && a; ++j) {

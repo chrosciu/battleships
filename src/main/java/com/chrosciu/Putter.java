@@ -7,96 +7,66 @@ import java.util.Random;
 
 public class Putter {
 
-    /**
-     * Put ships on board according to following rules
-     * <ul>
-     *     <li>Ships cannot be placed outside board</li>
-     *     <li>Ships cannot collide with each other</li>
-     *     <li>Ships cannot adjoin with each other even by corner</li>
-     * </ul>
-     *
-     * @param data - sizes of ships to are to be put on board
-     * @param s - board size (board is a square)
-     * @param rv - list where ships are added after successful put
-     */
-    public static void put(List<Integer> data, int s, List<Ship> rv) {
-        //array representing already occupied fields
-        boolean[][] arr = new boolean[s][s];
-        //try to place each ship
-        for (int i = 0; i < data.size(); ++i) {
-            //infinite loop - as this is random process, we cannot predict how many iterations it will take
-            for (; ; ) {
-                //get random orientation and first field coordinates
-                //true - horizontal, false - vertical
+    public static void put(List<Integer> shipSizes, int boardSize, List<Ship> ships) {
+        boolean[][] boardFieldsOccupationFlags = new boolean[boardSize][boardSize];
+        for (int i = 0; i < shipSizes.size(); ++i) {
+            for (;;) {
                 boolean f = new Random().nextBoolean();
-                //constant coordinate may be in whole size range
-                int a = new Random().nextInt(s);
-                //variable coordinate must be limited as ship cannot exceed the board
-                int b = new Random().nextInt(s - data.get(i));
-                //collision flag
-                boolean c = false;
-                //check collisions with other ships
-                for (int k = -1; k <= data.get(i); ++k) {
-                    //if field is outside board - skip check, there cannot be a collision
+                int a = new Random().nextInt(boardSize);
+                int b = new Random().nextInt(boardSize - shipSizes.get(i));
+                boolean collision = false;
+                for (int k = -1; k <= shipSizes.get(i); ++k) {
                     if (b + k < 0) {
                         continue;
                     }
-                    if (b + k >= s) {
+                    if (b + k >= boardSize) {
                         continue;
                     }
-                    //otherwise check all ship fields for collision and adjoining other ships
                     if (f) {
-                        //column before ship
                         if (a - 1 >= 0) {
-                            if (arr[a - 1][b + k]) {
-                                c = true;
+                            if (boardFieldsOccupationFlags[a - 1][b + k]) {
+                                collision = true;
                                 break;
                             }
                         }
-                        if (arr[a][b + k]) {
-                            c = true;
+                        if (boardFieldsOccupationFlags[a][b + k]) {
+                            collision = true;
                             break;
                         }
-                        //column before ship
-                        if (a + 1 < s) {
-                            if (arr[a + 1][b + k]) {
-                                c = true;
+                        if (a + 1 < boardSize) {
+                            if (boardFieldsOccupationFlags[a + 1][b + k]) {
+                                collision = true;
                                 break;
                             }
                         }
                     } else {
-                        //row above ship
                         if (a - 1 >= 0) {
-                            if (arr[b + k][a - 1]) {
-                                c = true;
+                            if (boardFieldsOccupationFlags[b + k][a - 1]) {
+                                collision = true;
                                 break;
                             }
                         }
-                        if (arr[b + k][a]) {
-                            c = true;
+                        if (boardFieldsOccupationFlags[b + k][a]) {
+                            collision = true;
                             break;
                         }
-                        //row below ship
-                        if (a + 1 < s) {
-                            if (arr[b + k][a + 1]) {
-                                c = true;
+                        if (a + 1 < boardSize) {
+                            if (boardFieldsOccupationFlags[b + k][a + 1]) {
+                                collision = true;
                                 break;
                             }
                         }
                     }
                 }
-                //if no collision...
-                if (!c) {
-                    for (int k = 0; k < data.get(i); ++k) {
-                        //... mark ship fields as occupied
+                if (!collision) {
+                    for (int k = 0; k < shipSizes.get(i); ++k) {
                         if (f) {
-                            arr[a][b + k] = true;
+                            boardFieldsOccupationFlags[a][b + k] = true;
                         } else {
-                            arr[b + k][a] = true;
+                            boardFieldsOccupationFlags[b + k][a] = true;
                         }
                     }
-                    //add ship to list
-                    rv.add(new Ship(f ? new Field(a, b) : new Field(b, a), data.get(i), f));
+                    ships.add(new Ship(f ? new Field(a, b) : new Field(b, a), shipSizes.get(i), f));
                     break;
                 }
             }
