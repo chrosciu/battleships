@@ -7,6 +7,11 @@ import lombok.Value;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.chrosciu.Result.FINISHED;
+import static com.chrosciu.Result.HIT;
+import static com.chrosciu.Result.MISSED;
+import static com.chrosciu.Result.SUNK;
+
 public class Shooter {
 
     @Getter
@@ -59,33 +64,27 @@ public class Shooter {
         }
     }
 
-    /**
-     * Take shot for given field and return shot result
-     *
-     * @param field - field coordinates
-     * @return - shot result: 0 - no hit, 1 - ship hit, 2 - ship sunk, 3 - all ships sunk
-     */
-    public int shoot(Field field) {
-        int rv = 0;
+    public Result shoot(Field field) {
+        Result result = MISSED;
         //iterate through all ships
-        for (int i = 0; i < shipsAsFields.size() && 0 == rv; ++i) {
-            //iterate through all ship fields
-            for (int j = 0; j < shipsAsFields.get(i).getFields().size() && 0 == rv; ++j) {
+        for (int i = 0; i < shipsAsFields.size() && MISSED == result; ++i) {
+            //if any of ship fields is equal to passed field - mark as hit
+            for (int j = 0; j < shipsAsFields.get(i).getFields().size() && MISSED == result; ++j) {
                 //if any of ship fields is equal to passed field - mark as hit
                 if (shipsAsFields.get(i).getFields().get(j).getField().equals(field)) {
                     shipsAsFields.get(i).getFields().get(j).markAsHit();
-                    rv = 1;
+                    result = HIT;
                 }
             }
             //if ship is hit - check if it is sunk
-            if (1 == rv) {
+            if (HIT == result) {
                 //iterate through all fields and check if they are all hit
                 boolean a = true;
                 for (int j = 0; j < shipsAsFields.get(i).getFields().size() && a; ++j) {
                     a &= shipsAsFields.get(i).getFields().get(j).isHit();
                 }
                 if (a) {
-                    rv = 2;
+                    result = SUNK;
                 }
             }
         }
@@ -97,8 +96,8 @@ public class Shooter {
             }
         }
         if (a) {
-            rv = 3;
+            result = FINISHED;
         }
-        return rv;
+        return result;
     }
 }

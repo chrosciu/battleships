@@ -2,13 +2,16 @@ package com.chrosciu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+
+import static com.chrosciu.Result.FINISHED;
 
 public class Game {
     public static void main(String[] args) {
         //one ship
-        List<Integer> data = Arrays.asList(1);
+        List<Integer> data = Collections.singletonList(1);
         // board 2 x 2
         int s = 2;
         List<Ship> rv = new ArrayList<>();
@@ -24,10 +27,9 @@ public class Game {
             System.out.println("enter b");
             int b = keyboard.nextInt();
             //... and take shot !
-            int r = shooter.shoot(new Field(a, b));
-            System.out.println(r);
-            //if all ships sunk finish the game
-            if (3 == r) {
+            Result result = shooter.shoot(new Field(a, b));
+            System.out.println(result);
+            if (FINISHED == result) {
                 break;
             }
         }
