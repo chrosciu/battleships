@@ -10,10 +10,10 @@ public class Field {
 
     public Field shift(int shift, @NonNull Direction direction) {
         switch (direction) {
-            case HORIZONTAL:
-                return new Field(x + shift, y);
             case VERTICAL:
                 return new Field(x, y + shift);
+            case HORIZONTAL:
+                return new Field(x + shift, y);
             default:
                 throw new IllegalStateException();
         }

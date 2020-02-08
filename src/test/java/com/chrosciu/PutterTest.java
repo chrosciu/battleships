@@ -69,8 +69,7 @@ public class PutterTest {
     private List<Field> getAllFieldsForShip(Ship ship) {
         List<Field> fields = new ArrayList<>();
         for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
-            Field shipField = ship.getFirstField().shift(fieldIndex, ship.getDirection());
-            fields.add(shipField);
+            fields.add(ship.getFirstField().shift(fieldIndex, ship.getDirection()));
         }
         return fields;
     }
@@ -78,15 +77,9 @@ public class PutterTest {
     private List<Field> getAllFieldsForShipWithBorder(Ship ship) {
         List<Field> fields = new ArrayList<>();
         for (int fieldIndex = -1; fieldIndex <= ship.getLength(); ++fieldIndex) {
-            if (VERTICAL == ship.getDirection()) {
-                fields.add(new Field(ship.getFirstField().getX() - 1, ship.getFirstField().getY() + fieldIndex));
-                fields.add(new Field(ship.getFirstField().getX(), ship.getFirstField().getY() + fieldIndex));
-                fields.add(new Field(ship.getFirstField().getX() + 1, ship.getFirstField().getY() + fieldIndex));
-            } else {
-                fields.add(new Field(ship.getFirstField().getX() + fieldIndex, ship.getFirstField().getY() - 1));
-                fields.add(new Field(ship.getFirstField().getX() + fieldIndex, ship.getFirstField().getY()));
-                fields.add(new Field(ship.getFirstField().getX() + fieldIndex, ship.getFirstField().getY() + 1));
-            }
+            fields.add(ship.getPreBorderFirstField().shift(fieldIndex, ship.getDirection()));
+            fields.add(ship.getFirstField().shift(fieldIndex, ship.getDirection()));
+            fields.add(ship.getPostBorderFirstField().shift(fieldIndex, ship.getDirection()));
         }
         return fields;
     }
