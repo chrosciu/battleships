@@ -1,5 +1,7 @@
 package com.chrosciu;
 
+import lombok.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,13 +13,14 @@ public class Putter {
     public static List<Ship> putShipsWithGivenSizeOnBoard(List<Integer> shipSizes, int boardSize) {
         List<Ship> ships = new ArrayList<>();
         boolean[][] boardFieldsOccupationFlags = new boolean[boardSize][boardSize];
-        for (int i = 0; i < shipSizes.size(); ++i) {
+        for (int shipSize: shipSizes) {
             for (;;) {
                 Direction direction = new Random().nextBoolean() ? VERTICAL : HORIZONTAL;
-                int a = new Random().nextInt(boardSize);
-                int b = new Random().nextInt(boardSize - shipSizes.get(i));
+                Field firstField = getRandomFirstFieldForShip(boardSize, shipSize, direction);
+                int a = VERTICAL == direction ? firstField.getX() : firstField.getY();
+                int b = VERTICAL == direction ? firstField.getY() : firstField.getX();
                 boolean collision = false;
-                for (int k = -1; k <= shipSizes.get(i); ++k) {
+                for (int k = -1; k <= shipSize; ++k) {
                     if (b + k < 0) {
                         continue;
                     }
@@ -61,18 +64,32 @@ public class Putter {
                     }
                 }
                 if (!collision) {
-                    for (int k = 0; k < shipSizes.get(i); ++k) {
-                        if (VERTICAL == direction) {
-                            boardFieldsOccupationFlags[a][b + k] = true;
-                        } else {
-                            boardFieldsOccupationFlags[b + k][a] = true;
-                        }
-                    }
-                    ships.add(new Ship(VERTICAL == direction ? new Field(a, b) : new Field(b, a), shipSizes.get(i), direction));
+                    markFieldsAsOccupied(firstField, shipSize, direction, boardFieldsOccupationFlags);
+                    ships.add(new Ship(firstField, shipSize, direction));
                     break;
                 }
             }
         }
         return ships;
+    }
+
+    private static Field getRandomFirstFieldForShip(int boardSize, int shipSize, @NonNull Direction direction) {
+        int constantCoordinate = new Random().nextInt(boardSize);
+        int changeableCoordinate = new Random().nextInt(boardSize - shipSize);
+        switch (direction) {
+            case VERTICAL:
+                return new Field(constantCoordinate, changeableCoordinate);
+            case HORIZONTAL:
+                return new Field(changeableCoordinate, constantCoordinate);
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    private static void markFieldsAsOccupied(Field firstField, int shipSize, @NonNull Direction direction, boolean[][] boardFieldsOccupationFlags) {
+        for (int fieldIndex = 0; fieldIndex < shipSize; ++fieldIndex) {
+            Field shipField = firstField.shift(fieldIndex, direction);
+            boardFieldsOccupationFlags[shipField.getX()][shipField.getY()] = true;
+        }
     }
 }
