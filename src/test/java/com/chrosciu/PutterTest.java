@@ -45,9 +45,9 @@ public class PutterTest {
         }
     }
 
-    private void assertFieldNotOutsideBoard(Field point, int boardSize) {
-        int pointHorizontalCoordinate = point.getX();
-        int pointVerticalCoordinate = point.getY();
+    private void assertFieldNotOutsideBoard(Field field, int boardSize) {
+        int pointHorizontalCoordinate = field.getX();
+        int pointVerticalCoordinate = field.getY();
         Assert.assertTrue(pointVerticalCoordinate >= 0 && pointVerticalCoordinate < boardSize);
         Assert.assertTrue(pointHorizontalCoordinate >= 0 && pointHorizontalCoordinate < boardSize);
     }

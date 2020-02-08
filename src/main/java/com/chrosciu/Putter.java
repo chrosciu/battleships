@@ -86,10 +86,25 @@ public class Putter {
         }
     }
 
+    private static boolean isCollisionDetected(Field firstField, int shipSize, @NonNull Direction direction) {
+        //TODO
+        return false;
+    }
+
+    private static boolean isFieldOnBoard(Field field, int boardSize) {
+        int x = field.getX();
+        int y = field.getY();
+        return (x >= 0 && x < boardSize && y >=0 && y < boardSize);
+    }
+
     private static void markFieldsAsOccupied(Field firstField, int shipSize, @NonNull Direction direction, boolean[][] boardFieldsOccupationFlags) {
         for (int fieldIndex = 0; fieldIndex < shipSize; ++fieldIndex) {
             Field shipField = firstField.shift(fieldIndex, direction);
             boardFieldsOccupationFlags[shipField.getX()][shipField.getY()] = true;
         }
     }
+
+
+
+
 }
