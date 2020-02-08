@@ -69,7 +69,8 @@ public class PutterTest {
     private List<Field> getAllFieldsForShip(Ship ship) {
         List<Field> fields = new ArrayList<>();
         for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
-            fields.add(ship.getDirection().getShift().apply(ship.getFirstField(), fieldIndex));
+            Field shipField = ship.getFirstField().shift(fieldIndex, ship.getDirection());
+            fields.add(shipField);
         }
         return fields;
     }

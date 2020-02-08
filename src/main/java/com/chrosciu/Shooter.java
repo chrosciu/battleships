@@ -51,7 +51,7 @@ public class Shooter {
     private ShipAsFields convertShipToShipWithFieldsForm(Ship ship) {
         ShipAsFields shipAsFields = new ShipAsFields();
         for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
-            Field shipField = ship.getDirection().getShift().apply(ship.getFirstField(), fieldIndex);
+            Field shipField = ship.getFirstField().shift(fieldIndex, ship.getDirection());
             shipAsFields.addField(new FieldWithHitMark(shipField));
         }
         return shipAsFields;
