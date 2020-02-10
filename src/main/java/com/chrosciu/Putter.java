@@ -17,6 +17,7 @@ public class Putter {
             for (;;) {
                 Direction direction = new Random().nextBoolean() ? VERTICAL : HORIZONTAL;
                 Field firstField = getRandomFirstFieldForShip(boardSize, shipSize, direction);
+                Ship ship = new Ship(firstField, shipSize, direction);
                 int a = VERTICAL == direction ? firstField.getX() : firstField.getY();
                 int b = VERTICAL == direction ? firstField.getY() : firstField.getX();
                 boolean collision = false;
@@ -64,7 +65,7 @@ public class Putter {
                     }
                 }
                 if (!collision) {
-                    markFieldsAsOccupied(firstField, shipSize, direction, boardFieldsOccupationFlags);
+                    markShipFieldsAsOccupied(ship, boardFieldsOccupationFlags);
                     ships.add(new Ship(firstField, shipSize, direction));
                     break;
                 }
@@ -97,9 +98,9 @@ public class Putter {
         return (x >= 0 && x < boardSize && y >=0 && y < boardSize);
     }
 
-    private static void markFieldsAsOccupied(Field firstField, int shipSize, @NonNull Direction direction, boolean[][] boardFieldsOccupationFlags) {
-        for (int fieldIndex = 0; fieldIndex < shipSize; ++fieldIndex) {
-            Field shipField = firstField.shift(fieldIndex, direction);
+    private static void markShipFieldsAsOccupied(Ship ship, boolean[][] boardFieldsOccupationFlags) {
+        for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
+            Field shipField = ship.getFirstField().shift(fieldIndex, ship.getDirection());
             boardFieldsOccupationFlags[shipField.getX()][shipField.getY()] = true;
         }
     }
