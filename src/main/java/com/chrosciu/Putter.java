@@ -10,16 +10,23 @@ import static com.chrosciu.Direction.HORIZONTAL;
 import static com.chrosciu.Direction.VERTICAL;
 
 public class Putter {
-    public static List<Ship> putShipsWithGivenSizeOnBoard(List<Integer> shipSizes, int boardSize) {
+    private final int boardSize;
+    private final boolean[][] boardFieldsOccupationFlags;
+
+    public Putter(int boardSize) {
+        this.boardSize = boardSize;
+        this.boardFieldsOccupationFlags = new boolean[boardSize][boardSize];
+    }
+
+    public List<Ship> putShipsWithGivenSizeOnBoard(List<Integer> shipSizes) {
         List<Ship> ships = new ArrayList<>();
-        boolean[][] boardFieldsOccupationFlags = new boolean[boardSize][boardSize];
         for (int shipSize: shipSizes) {
             for (;;) {
                 Direction direction = new Random().nextBoolean() ? VERTICAL : HORIZONTAL;
-                Field firstField = getRandomFirstFieldForShip(boardSize, shipSize, direction);
+                Field firstField = getRandomFirstFieldForShip(shipSize, direction);
                 Ship ship = new Ship(firstField, shipSize, direction);
-                if (!isCollisionDetectedForShip(ship, boardSize, boardFieldsOccupationFlags)) {
-                    markShipFieldsAsOccupied(ship, boardFieldsOccupationFlags);
+                if (!isCollisionDetectedForShip(ship)) {
+                    markShipFieldsAsOccupied(ship);
                     ships.add(new Ship(firstField, shipSize, direction));
                     break;
                 }
@@ -28,7 +35,7 @@ public class Putter {
         return ships;
     }
 
-    private static Field getRandomFirstFieldForShip(int boardSize, int shipSize, @NonNull Direction direction) {
+    private Field getRandomFirstFieldForShip(int shipSize, @NonNull Direction direction) {
         int constantCoordinate = new Random().nextInt(boardSize);
         int changeableCoordinate = new Random().nextInt(boardSize - shipSize);
         switch (direction) {
@@ -41,7 +48,7 @@ public class Putter {
         }
     }
 
-    private static boolean isCollisionDetectedForShip(Ship ship, int boardSize, boolean[][] boardFieldsOccupationFlags) {
+    private boolean isCollisionDetectedForShip(Ship ship) {
         List<Field> fields = new ArrayList<>();
         for (int fieldIndex = -1; fieldIndex <= ship.getLength(); ++fieldIndex) {
             fields.add(ship.getPreBorderFirstField().shift(fieldIndex, ship.getDirection()));
@@ -50,7 +57,7 @@ public class Putter {
         }
         boolean collision = false;
         for (Field field: fields) {
-            if (isFieldOnBoard(field, boardSize)) {
+            if (isFieldOnBoard(field)) {
                 if (boardFieldsOccupationFlags[field.getX()][field.getY()]) {
                     collision = true;
                     break;
@@ -60,20 +67,16 @@ public class Putter {
         return collision;
     }
 
-    private static boolean isFieldOnBoard(Field field, int boardSize) {
+    private boolean isFieldOnBoard(Field field) {
         int x = field.getX();
         int y = field.getY();
         return (x >= 0 && x < boardSize && y >=0 && y < boardSize);
     }
 
-    private static void markShipFieldsAsOccupied(Ship ship, boolean[][] boardFieldsOccupationFlags) {
+    private void markShipFieldsAsOccupied(Ship ship) {
         for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
             Field shipField = ship.getFirstField().shift(fieldIndex, ship.getDirection());
             boardFieldsOccupationFlags[shipField.getX()][shipField.getY()] = true;
         }
     }
-
-
-
-
 }

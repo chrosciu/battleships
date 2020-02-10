@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.chrosciu.Direction.VERTICAL;
-
 public class PutterTest {
 
     private static final List<Integer> SHIPS_SIZES = Arrays.asList(4, 3, 3, 2, 2, 2, 1, 1, 1, 1);
@@ -17,8 +15,10 @@ public class PutterTest {
 
     @Test
     public void shouldPutShipsWithGivenSizesOnBoardWithoutCollision() {
+        //given
+        Putter putter = new Putter(BOARD_SIZE);
         //when
-        List<Ship> ships = Putter.putShipsWithGivenSizeOnBoard(SHIPS_SIZES, BOARD_SIZE);
+        List<Ship> ships = putter.putShipsWithGivenSizeOnBoard(SHIPS_SIZES);
 
         //then
         assertAllShipsHaveRequestedSizes(ships, SHIPS_SIZES);

@@ -10,7 +10,8 @@ public class Game {
     public static void main(String[] args) {
         List<Integer> shipSizes = Collections.singletonList(1);
         int boardSize = 2;
-        List<Ship> ships = Putter.putShipsWithGivenSizeOnBoard(shipSizes, boardSize);
+        Putter putter = new Putter(boardSize);
+        List<Ship> ships = putter.putShipsWithGivenSizeOnBoard(shipSizes);
         Shooter shooter = new Shooter(ships);
         Scanner keyboard = new Scanner(System.in);
         for (;;) {
