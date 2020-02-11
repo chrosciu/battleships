@@ -1,7 +1,5 @@
 package com.chrosciu;
 
-import lombok.NonNull;
-
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -36,17 +34,10 @@ public class BoardLocator {
         }
     }
 
-    private Field getRandomFirstFieldForShip(int shipSize, @NonNull Direction direction) {
+    private Field getRandomFirstFieldForShip(int shipSize, Direction direction) {
         int constantCoordinate = new Random().nextInt(boardSize);
         int changeableCoordinate = new Random().nextInt(boardSize - shipSize);
-        switch (direction) {
-            case VERTICAL:
-                return new Field(constantCoordinate, changeableCoordinate);
-            case HORIZONTAL:
-                return new Field(changeableCoordinate, constantCoordinate);
-            default:
-                throw new IllegalStateException();
-        }
+        return direction.getFieldCreator().apply(constantCoordinate, changeableCoordinate);
     }
 
     private boolean isCollisionDetectedForShip(Ship ship) {
