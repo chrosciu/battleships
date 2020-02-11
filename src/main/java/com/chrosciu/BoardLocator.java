@@ -41,16 +41,9 @@ public class BoardLocator {
     }
 
     private boolean isCollisionDetectedForShip(Ship ship) {
-        boolean collision = false;
-        for (Field field: ship.getAllFieldsWithBorder()) {
-            if (field.isOnBoard(boardSize)) {
-                if (boardFieldsOccupationFlags[field.getX()][field.getY()]) {
-                    collision = true;
-                    break;
-                }
-            }
-        }
-        return collision;
+        return ship.getAllFieldsWithBorder().stream()
+                .filter(field -> field.isOnBoard(boardSize))
+                .anyMatch(field -> boardFieldsOccupationFlags[field.getX()][field.getY()]);
     }
 
     private void markShipFieldsAsOccupied(Ship ship) {
