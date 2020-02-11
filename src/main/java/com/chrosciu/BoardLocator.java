@@ -2,7 +2,6 @@ package com.chrosciu;
 
 import lombok.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -51,14 +50,8 @@ public class BoardLocator {
     }
 
     private boolean isCollisionDetectedForShip(Ship ship) {
-        List<Field> fields = new ArrayList<>();
-        for (int fieldIndex = -1; fieldIndex <= ship.getLength(); ++fieldIndex) {
-            fields.add(ship.getPreBorderFirstField().shift(fieldIndex, ship.getDirection()));
-            fields.add(ship.getFirstField().shift(fieldIndex, ship.getDirection()));
-            fields.add(ship.getPostBorderFirstField().shift(fieldIndex, ship.getDirection()));
-        }
         boolean collision = false;
-        for (Field field: fields) {
+        for (Field field: ship.getAllFieldsWithBorder()) {
             if (field.isOnBoard(boardSize)) {
                 if (boardFieldsOccupationFlags[field.getX()][field.getY()]) {
                     collision = true;
@@ -70,9 +63,8 @@ public class BoardLocator {
     }
 
     private void markShipFieldsAsOccupied(Ship ship) {
-        for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
-            Field shipField = ship.getFirstField().shift(fieldIndex, ship.getDirection());
-            boardFieldsOccupationFlags[shipField.getX()][shipField.getY()] = true;
+        for (Field field: ship.getAllFields()) {
+            boardFieldsOccupationFlags[field.getX()][field.getY()] = true;
         }
     }
 }

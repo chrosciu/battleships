@@ -3,7 +3,6 @@ package com.chrosciu;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +40,7 @@ public class BoardLocatorTest {
     }
 
     private void assertShipNotOutsideBoard(Ship ship, int boardSize) {
-        List<Field> allShipFields = getAllFieldsForShip(ship);
+        List<Field> allShipFields = ship.getAllFields();
         for (Field shipField: allShipFields) {
             assertFieldNotOutsideBoard(shipField, boardSize);
         }
@@ -55,32 +54,15 @@ public class BoardLocatorTest {
         int shipsCount = ships.size();
         for (int i = 0; i < shipsCount; ++i) {
             Ship firstShip = ships.get(i);
-            List<Field> firstShipFieldsWithBorder = getAllFieldsForShipWithBorder(firstShip);
+            List<Field> firstShipFieldsWithBorder = firstShip.getAllFieldsWithBorder();
             for (int j = i + 1; j < shipsCount; ++j) {
                 Ship secondShip = ships.get(j);
-                List<Field> secondShipFields = getAllFieldsForShip(secondShip);
+                List<Field> secondShipFields = secondShip.getAllFields();
                 secondShipFields.retainAll(firstShipFieldsWithBorder);
                 assertTrue(secondShipFields.isEmpty());
             }
         }
     }
 
-    private List<Field> getAllFieldsForShip(Ship ship) {
-        List<Field> fields = new ArrayList<>();
-        for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
-            fields.add(ship.getFirstField().shift(fieldIndex, ship.getDirection()));
-        }
-        return fields;
-    }
-
-    private List<Field> getAllFieldsForShipWithBorder(Ship ship) {
-        List<Field> fields = new ArrayList<>();
-        for (int fieldIndex = -1; fieldIndex <= ship.getLength(); ++fieldIndex) {
-            fields.add(ship.getPreBorderFirstField().shift(fieldIndex, ship.getDirection()));
-            fields.add(ship.getFirstField().shift(fieldIndex, ship.getDirection()));
-            fields.add(ship.getPostBorderFirstField().shift(fieldIndex, ship.getDirection()));
-        }
-        return fields;
-    }
 
 }
