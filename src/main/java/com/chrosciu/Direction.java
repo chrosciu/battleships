@@ -11,11 +11,11 @@ public enum Direction {
     VERTICAL((field, shift) -> new Field(field.getX(), field.getY() + shift)),
     HORIZONTAL((field, shift) -> new Field(field.getX() + shift, field.getY()));
 
-    private Direction perpendicular;
-    private final BiFunction<Field, Integer, Field> shiftField;
+    private Direction perpendicularDirection;
+    private final BiFunction<Field, Integer, Field> fieldShifter;
 
     static {
-        VERTICAL.perpendicular = HORIZONTAL;
-        HORIZONTAL.perpendicular = VERTICAL;
+        VERTICAL.perpendicularDirection = HORIZONTAL;
+        HORIZONTAL.perpendicularDirection = VERTICAL;
     }
 }

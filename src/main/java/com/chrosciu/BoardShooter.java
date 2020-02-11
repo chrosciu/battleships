@@ -50,9 +50,8 @@ public class BoardShooter {
 
     private ShipAsFields convertShipToShipWithFieldsForm(Ship ship) {
         ShipAsFields shipAsFields = new ShipAsFields();
-        for (int fieldIndex = 0; fieldIndex < ship.getLength(); ++fieldIndex) {
-            Field shipField = ship.getFirstField().shift(fieldIndex, ship.getDirection());
-            shipAsFields.addField(new FieldWithHitMark(shipField));
+        for (Field field : ship.getAllFields()) {
+            shipAsFields.addField(new FieldWithHitMark(field));
         }
         return shipAsFields;
     }
