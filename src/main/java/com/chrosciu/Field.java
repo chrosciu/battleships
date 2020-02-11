@@ -18,4 +18,8 @@ public class Field {
                 throw new IllegalStateException();
         }
     }
+
+    public boolean isOnBoard(int boardSize) {
+        return (x >= 0 && x < boardSize && y >=0 && y < boardSize);
+    }
 }

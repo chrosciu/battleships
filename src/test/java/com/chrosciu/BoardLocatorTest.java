@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertTrue;
+
 public class BoardLocatorTest {
 
     private static final List<Integer> SHIPS_SIZES = Arrays.asList(4, 3, 3, 2, 2, 2, 1, 1, 1, 1);
@@ -33,7 +35,7 @@ public class BoardLocatorTest {
     }
 
     private void assertAllShipsNotOutsideBoard(List<Ship> ships, int boardSize) {
-        for(Ship ship : ships) {
+        for (Ship ship : ships) {
             assertShipNotOutsideBoard(ship, boardSize);
         }
     }
@@ -46,10 +48,7 @@ public class BoardLocatorTest {
     }
 
     private void assertFieldNotOutsideBoard(Field field, int boardSize) {
-        int pointHorizontalCoordinate = field.getX();
-        int pointVerticalCoordinate = field.getY();
-        Assert.assertTrue(pointVerticalCoordinate >= 0 && pointVerticalCoordinate < boardSize);
-        Assert.assertTrue(pointHorizontalCoordinate >= 0 && pointHorizontalCoordinate < boardSize);
+        assertTrue(field.isOnBoard(boardSize));
     }
 
     private void assertNoCollisionBetweenShips(List<Ship> ships) {
@@ -61,7 +60,7 @@ public class BoardLocatorTest {
                 Ship secondShip = ships.get(j);
                 List<Field> secondShipFields = getAllFieldsForShip(secondShip);
                 secondShipFields.retainAll(firstShipFieldsWithBorder);
-                Assert.assertTrue(secondShipFields.isEmpty());
+                assertTrue(secondShipFields.isEmpty());
             }
         }
     }
