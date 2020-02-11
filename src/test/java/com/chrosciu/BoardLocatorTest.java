@@ -8,17 +8,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PutterTest {
+public class BoardLocatorTest {
 
     private static final List<Integer> SHIPS_SIZES = Arrays.asList(4, 3, 3, 2, 2, 2, 1, 1, 1, 1);
     private static final int BOARD_SIZE = 10;
 
     @Test
-    public void shouldPutShipsWithGivenSizesOnBoardWithoutCollision() {
+    public void shouldLocateShipsWithGivenSizesOnBoardWithoutCollision() {
         //given
-        Putter putter = new Putter(BOARD_SIZE);
+        BoardLocator boardLocator = new BoardLocator(BOARD_SIZE);
         //when
-        List<Ship> ships = putter.putShipsWithGivenSizeOnBoard(SHIPS_SIZES);
+        List<Ship> ships = boardLocator.locateShipsWithGivenSizeOnBoard(SHIPS_SIZES);
 
         //then
         assertAllShipsHaveRequestedSizes(ships, SHIPS_SIZES);

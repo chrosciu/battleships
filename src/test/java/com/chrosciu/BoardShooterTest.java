@@ -13,7 +13,7 @@ import static com.chrosciu.Result.MISSED;
 import static com.chrosciu.Result.SUNK;
 import static org.junit.Assert.assertEquals;
 
-public class ShooterTest {
+public class BoardShooterTest {
     private static final Field VERTICAL_TWO_FIELDS_SHIP_FIRST_FIELD = new Field(3, 4);
     private static final Field VERTICAL_TWO_FIELDS_SHIP_SECOND_FIELD = new Field(3, 5);
 
@@ -41,72 +41,72 @@ public class ShooterTest {
     private static final List<Ship> SHIPS =
             Arrays.asList(VERTICAL_TWO_FIELDS_SHIP, ONE_FIELD_SHIP, ANOTHER_ONE_FIELD_SHIP, HORIZONTAL_TWO_FIELDS_SHIP);
     @Test
-    public void shouldProperlyCalculateShootResultForGivenSetofShipsOnBoard() {
+    public void shouldProperlyCalculateShotResultForGivenSetofShipsOnBoard() {
         //given
-        Shooter shooter = new Shooter(SHIPS);
+        BoardShooter boardShooter = new BoardShooter(SHIPS);
 
         //when
-        Result result = shooter.takeShot(FIELD_WITHOUT_SHIP);
+        Result result = boardShooter.takeShot(FIELD_WITHOUT_SHIP);
 
         //then
         assertEquals(MISSED, result);
 
         //when
-        result = shooter.takeShot(VERTICAL_TWO_FIELDS_SHIP_FIRST_FIELD);
+        result = boardShooter.takeShot(VERTICAL_TWO_FIELDS_SHIP_FIRST_FIELD);
 
         //then
         assertEquals(HIT, result);
 
         //when
-        result = shooter.takeShot(ONE_FIELD_SHIP_FIELD);
+        result = boardShooter.takeShot(ONE_FIELD_SHIP_FIELD);
 
         //then
         assertEquals(SUNK, result);
 
         //when
-        result = shooter.takeShot(VERTICAL_TWO_FIELDS_SHIP_FIRST_FIELD);
+        result = boardShooter.takeShot(VERTICAL_TWO_FIELDS_SHIP_FIRST_FIELD);
 
         //then
         assertEquals(HIT, result);
 
         //when
-        result = shooter.takeShot(VERTICAL_TWO_FIELDS_SHIP_SECOND_FIELD);
+        result = boardShooter.takeShot(VERTICAL_TWO_FIELDS_SHIP_SECOND_FIELD);
 
         //then
         assertEquals(SUNK, result);
 
         //when
-        result = shooter.takeShot(VERTICAL_TWO_FIELDS_SHIP_SECOND_FIELD);
+        result = boardShooter.takeShot(VERTICAL_TWO_FIELDS_SHIP_SECOND_FIELD);
 
         //then
         assertEquals(SUNK, result);
 
         //when
-        result = shooter.takeShot(ANOTHER_ONE_FIELD_SHIP_FIELD);
+        result = boardShooter.takeShot(ANOTHER_ONE_FIELD_SHIP_FIELD);
 
         //then
         assertEquals(SUNK, result);
 
         //when
-        result = shooter.takeShot(HORIZONTAL_TWO_FIELDS_SHIP_FIRST_FIELD);
+        result = boardShooter.takeShot(HORIZONTAL_TWO_FIELDS_SHIP_FIRST_FIELD);
 
         //then
         assertEquals(HIT, result);
 
         //when
-        result = shooter.takeShot(HORIZONTAL_TWO_FIELDS_SHIP_SECOND_FIELD);
+        result = boardShooter.takeShot(HORIZONTAL_TWO_FIELDS_SHIP_SECOND_FIELD);
 
         //then
         assertEquals(FINISHED, result);
 
         //when
-        result = shooter.takeShot(HORIZONTAL_TWO_FIELDS_SHIP_FIRST_FIELD);
+        result = boardShooter.takeShot(HORIZONTAL_TWO_FIELDS_SHIP_FIRST_FIELD);
 
         //then
         assertEquals(FINISHED, result);
 
         //when
-        result = shooter.takeShot(ANOTHER_FIELD_WITHOUT_SHIP);
+        result = boardShooter.takeShot(ANOTHER_FIELD_WITHOUT_SHIP);
 
         //then
         assertEquals(FINISHED, result);

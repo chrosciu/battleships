@@ -41,10 +41,10 @@ class ShipAsFields {
     }
 }
 
-public class Shooter {
+public class BoardShooter {
     private final List<ShipAsFields> shipsAsFields;
 
-    public Shooter(List<Ship> ships) {
+    public BoardShooter(List<Ship> ships) {
         shipsAsFields = ships.stream().map(this::convertShipToShipWithFieldsForm).collect(Collectors.toList());
     }
 
