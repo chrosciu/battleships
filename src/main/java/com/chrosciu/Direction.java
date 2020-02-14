@@ -8,9 +8,9 @@ import java.util.function.BiFunction;
 @RequiredArgsConstructor
 @Getter
 public enum Direction {
-    VERTICAL((field, shift) -> new Field(field.getX(), field.getY() + shift),
+    VERTICAL((field, shift) -> field.withY(field.getY() + shift),
             (constant, changeable) -> new Field(constant, changeable)),
-    HORIZONTAL((field, shift) -> new Field(field.getX() + shift, field.getY()),
+    HORIZONTAL((field, shift) -> field.withX(field.getX() + shift),
             (constant, changeable) -> new Field(changeable, constant));
 
     private Direction perpendicularDirection;

@@ -1,8 +1,10 @@
 package com.chrosciu;
 
 import lombok.Value;
+import lombok.With;
 
 @Value
+@With
 public class Field {
     int x;
     int y;
