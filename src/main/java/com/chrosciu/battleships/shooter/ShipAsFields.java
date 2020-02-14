@@ -28,19 +28,20 @@ class ShipAsFields {
     }
 
     public Result takeShot(Field field) {
+        Result result = takeShotByIteratingFields(field);
+        if (HIT == result && allFieldsHit()) {
+            result = SUNK;
+        }
+        return result;
+    }
+
+    private Result takeShotByIteratingFields(Field field) {
         Result result = MISSED;
         for (FieldWithHitMark fieldWithHitMark: fields) {
             if (fieldWithHitMark.getField().equals(field)) {
                 fieldWithHitMark.markAsHit();
                 result = HIT;
-            }
-            if (result != MISSED) {
                 break;
-            }
-        }
-        if (HIT == result) {
-            if (allFieldsHit()) {
-                result = SUNK;
             }
         }
         return result;
