@@ -12,6 +12,7 @@ import static com.chrosciu.battleships.model.Result.MISSED;
 
 public class BoardShooter {
     private final List<ShipAsFields> shipsAsFields;
+    private boolean finished;
 
     public BoardShooter(List<Ship> ships) {
         shipsAsFields = ships.stream().map(this::convertShipToShipWithFieldsForm).collect(Collectors.toList());
@@ -26,6 +27,9 @@ public class BoardShooter {
     }
 
     public Result takeShot(Field field) {
+        if (finished) {
+            return FINISHED;
+        }
         Result result = MISSED;
         for (ShipAsFields shipAsFields: shipsAsFields) {
             result = shipAsFields.takeShot(field);
@@ -34,6 +38,7 @@ public class BoardShooter {
             }
         }
         if (allFieldsInAllShipsHit()) {
+            finished = true;
             result = FINISHED;
         }
         return result;
