@@ -30,16 +30,21 @@ public class BoardShooter {
         if (finished) {
             return FINISHED;
         }
+        Result result = takeShotByIteratingShips(field);
+        if (result != MISSED && allFieldsInAllShipsHit()) {
+            finished = true;
+            result = FINISHED;
+        }
+        return result;
+    }
+
+    private Result takeShotByIteratingShips(Field field) {
         Result result = MISSED;
         for (ShipAsFields shipAsFields: shipsAsFields) {
             result = shipAsFields.takeShot(field);
             if (result != MISSED) {
                 break;
             }
-        }
-        if (allFieldsInAllShipsHit()) {
-            finished = true;
-            result = FINISHED;
         }
         return result;
     }
