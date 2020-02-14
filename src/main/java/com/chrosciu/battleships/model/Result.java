@@ -1,4 +1,4 @@
-package com.chrosciu;
+package com.chrosciu.battleships.model;
 
 public enum Result {
     MISSED,

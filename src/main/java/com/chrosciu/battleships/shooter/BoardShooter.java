@@ -1,45 +1,16 @@
-package com.chrosciu;
+package com.chrosciu.battleships.shooter;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import com.chrosciu.battleships.model.Field;
+import com.chrosciu.battleships.model.Result;
+import com.chrosciu.battleships.model.Ship;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.chrosciu.Result.FINISHED;
-import static com.chrosciu.Result.HIT;
-import static com.chrosciu.Result.MISSED;
-import static com.chrosciu.Result.SUNK;
-
-@Getter
-@EqualsAndHashCode
-class FieldWithHitMark {
-    private final Field field;
-    private boolean hit;
-
-    FieldWithHitMark(Field field) {
-        this.field = field;
-        this.hit = false;
-    }
-
-    void markAsHit() {
-        this.hit = true;
-    }
-}
-
-@Getter
-class ShipAsFields {
-    private final List<FieldWithHitMark> fields;
-
-    ShipAsFields() {
-        fields = new ArrayList<>();
-    }
-
-    void addField(FieldWithHitMark field) {
-        fields.add(field);
-    }
-}
+import static com.chrosciu.battleships.model.Result.FINISHED;
+import static com.chrosciu.battleships.model.Result.HIT;
+import static com.chrosciu.battleships.model.Result.MISSED;
+import static com.chrosciu.battleships.model.Result.SUNK;
 
 public class BoardShooter {
     private final List<ShipAsFields> shipsAsFields;

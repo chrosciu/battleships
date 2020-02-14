@@ -1,11 +1,15 @@
-package com.chrosciu;
+package com.chrosciu.battleships.locator;
+
+import com.chrosciu.battleships.model.Direction;
+import com.chrosciu.battleships.model.Field;
+import com.chrosciu.battleships.model.Ship;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static com.chrosciu.Direction.HORIZONTAL;
-import static com.chrosciu.Direction.VERTICAL;
+import static com.chrosciu.battleships.model.Direction.HORIZONTAL;
+import static com.chrosciu.battleships.model.Direction.VERTICAL;
 
 public class BoardLocator {
     private final int boardSize;

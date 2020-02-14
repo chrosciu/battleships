@@ -1,16 +1,19 @@
-package com.chrosciu;
+package com.chrosciu.battleships.shooter;
 
+import com.chrosciu.battleships.model.Field;
+import com.chrosciu.battleships.model.Result;
+import com.chrosciu.battleships.model.Ship;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.chrosciu.Direction.HORIZONTAL;
-import static com.chrosciu.Direction.VERTICAL;
-import static com.chrosciu.Result.FINISHED;
-import static com.chrosciu.Result.HIT;
-import static com.chrosciu.Result.MISSED;
-import static com.chrosciu.Result.SUNK;
+import static com.chrosciu.battleships.model.Direction.HORIZONTAL;
+import static com.chrosciu.battleships.model.Direction.VERTICAL;
+import static com.chrosciu.battleships.model.Result.FINISHED;
+import static com.chrosciu.battleships.model.Result.HIT;
+import static com.chrosciu.battleships.model.Result.MISSED;
+import static com.chrosciu.battleships.model.Result.SUNK;
 import static org.junit.Assert.assertEquals;
 
 public class BoardShooterTest {

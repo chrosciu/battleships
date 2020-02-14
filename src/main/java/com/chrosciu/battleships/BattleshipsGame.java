@@ -1,10 +1,16 @@
-package com.chrosciu;
+package com.chrosciu.battleships;
+
+import com.chrosciu.battleships.locator.BoardLocator;
+import com.chrosciu.battleships.model.Field;
+import com.chrosciu.battleships.model.Result;
+import com.chrosciu.battleships.model.Ship;
+import com.chrosciu.battleships.shooter.BoardShooter;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.chrosciu.Result.FINISHED;
+import static com.chrosciu.battleships.model.Result.FINISHED;
 
 public class BattleshipsGame {
 

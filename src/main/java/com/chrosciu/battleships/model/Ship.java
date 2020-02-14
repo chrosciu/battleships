@@ -1,4 +1,4 @@
-package com.chrosciu;
+package com.chrosciu.battleships.model;
 
 import lombok.Value;
 

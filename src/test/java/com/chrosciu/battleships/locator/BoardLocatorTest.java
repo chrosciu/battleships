@@ -1,5 +1,7 @@
-package com.chrosciu;
+package com.chrosciu.battleships.locator;
 
+import com.chrosciu.battleships.model.Field;
+import com.chrosciu.battleships.model.Ship;
 import org.junit.Assert;
 import org.junit.Test;
 
