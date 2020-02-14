@@ -40,7 +40,7 @@ public class BoardShooter {
                 }
             }
             if (HIT == result) {
-                if (allFieldsInShipHit(shipAsFields)) {
+                if (shipAsFields.allFieldsHit()) {
                     result = SUNK;
                 }
             }
@@ -54,27 +54,11 @@ public class BoardShooter {
         return result;
     }
 
-    private boolean allFieldsInShipHit(ShipAsFields shipAsFields) {
-        boolean allFieldsInShipHit = true;
-        for (FieldWithHitMark fieldWithHitMark: shipAsFields.getFields()) {
-            allFieldsInShipHit &= fieldWithHitMark.isHit();
-            if (!allFieldsInShipHit) {
-                break;
-            }
-        }
-        return allFieldsInShipHit;
-    }
-
     private boolean allFieldsInAllShipsHit() {
         boolean allFieldsInAllShipsHit = true;
         for (ShipAsFields shipAsFields: shipsAsFields) {
-            for (FieldWithHitMark fieldWithHitMark: shipAsFields.getFields()) {
-                allFieldsInAllShipsHit &= fieldWithHitMark.isHit();
-                if (!allFieldsInAllShipsHit) {
-                    break;
-                }
-            }
-            if (!allFieldsInAllShipsHit) {
+            if (!shipAsFields.allFieldsHit()) {
+                allFieldsInAllShipsHit = false;
                 break;
             }
         }

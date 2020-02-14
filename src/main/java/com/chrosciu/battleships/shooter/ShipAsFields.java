@@ -16,4 +16,15 @@ class ShipAsFields {
     void addField(FieldWithHitMark field) {
         fields.add(field);
     }
+
+    public boolean allFieldsHit() {
+        boolean allFieldsInShipHit = true;
+        for (FieldWithHitMark fieldWithHitMark: fields) {
+            allFieldsInShipHit &= fieldWithHitMark.isHit();
+            if (!allFieldsInShipHit) {
+                break;
+            }
+        }
+        return allFieldsInShipHit;
+    }
 }
