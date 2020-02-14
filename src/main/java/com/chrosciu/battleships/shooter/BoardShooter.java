@@ -55,13 +55,6 @@ public class BoardShooter {
     }
 
     private boolean allFieldsInAllShipsHit() {
-        boolean allFieldsInAllShipsHit = true;
-        for (ShipAsFields shipAsFields: shipsAsFields) {
-            if (!shipAsFields.allFieldsHit()) {
-                allFieldsInAllShipsHit = false;
-                break;
-            }
-        }
-        return allFieldsInAllShipsHit;
+        return shipsAsFields.stream().allMatch(ShipAsFields::allFieldsHit);
     }
 }

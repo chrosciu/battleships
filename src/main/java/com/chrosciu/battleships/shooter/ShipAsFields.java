@@ -18,13 +18,6 @@ class ShipAsFields {
     }
 
     public boolean allFieldsHit() {
-        boolean allFieldsInShipHit = true;
-        for (FieldWithHitMark fieldWithHitMark: fields) {
-            allFieldsInShipHit &= fieldWithHitMark.isHit();
-            if (!allFieldsInShipHit) {
-                break;
-            }
-        }
-        return allFieldsInShipHit;
+        return fields.stream().allMatch(FieldWithHitMark::isHit);
     }
 }
