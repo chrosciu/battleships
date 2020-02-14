@@ -14,6 +14,7 @@ import static com.chrosciu.battleships.model.Result.SUNK;
 @Getter
 class ShipAsFields {
     private final List<FieldWithHitMark> fields;
+    private boolean sunk = false;
 
     ShipAsFields() {
         fields = new ArrayList<>();
@@ -29,9 +30,7 @@ class ShipAsFields {
 
     public Result takeShot(Field field) {
         Result result = takeShotByIteratingFields(field);
-        if (HIT == result && allFieldsHit()) {
-            result = SUNK;
-        }
+        result = adjustResultAndMarkFlagIfSunk(result);
         return result;
     }
 
@@ -42,6 +41,18 @@ class ShipAsFields {
                 fieldWithHitMark.markAsHit();
                 result = HIT;
                 break;
+            }
+        }
+        return result;
+    }
+
+    private Result adjustResultAndMarkFlagIfSunk(Result result) {
+        if (HIT == result) {
+            if (sunk) {
+                return SUNK;
+            } else if (allFieldsHit()) {
+                sunk = true;
+                return SUNK;
             }
         }
         return result;
