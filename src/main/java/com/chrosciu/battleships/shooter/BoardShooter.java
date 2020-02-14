@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.chrosciu.battleships.model.Result.FINISHED;
-import static com.chrosciu.battleships.model.Result.HIT;
 import static com.chrosciu.battleships.model.Result.MISSED;
-import static com.chrosciu.battleships.model.Result.SUNK;
 
 public class BoardShooter {
     private final List<ShipAsFields> shipsAsFields;
@@ -30,20 +28,7 @@ public class BoardShooter {
     public Result takeShot(Field field) {
         Result result = MISSED;
         for (ShipAsFields shipAsFields: shipsAsFields) {
-            for (FieldWithHitMark fieldWithHitMark: shipAsFields.getFields()) {
-                if (fieldWithHitMark.getField().equals(field)) {
-                    fieldWithHitMark.markAsHit();
-                    result = HIT;
-                }
-                if (result != MISSED) {
-                    break;
-                }
-            }
-            if (HIT == result) {
-                if (shipAsFields.allFieldsHit()) {
-                    result = SUNK;
-                }
-            }
+            result = shipAsFields.takeShot(field);
             if (result != MISSED) {
                 break;
             }
